@@ -1,5 +1,9 @@
 name: Deploy PHP App to DigitalOcean
 
+env:
+      SERVER_IP: mensa-plan.de
+      SSH_USER: root
+
 on:
   push:
     branches:
