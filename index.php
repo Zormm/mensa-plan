@@ -30,6 +30,7 @@
 <div class="container">
     <h1>Willkommen auf der Mensa-Plan Seite</h1>
     <p>Hier finden Sie den aktuellen Menüplan für unsere Mensa.</p>
+    <p>Bald könnt ihr unten auch Markieren, wo ich gerade sitzt</p>
 </div>
 </body>
 </html>
