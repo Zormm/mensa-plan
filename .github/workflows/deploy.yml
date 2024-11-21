@@ -1,0 +1,32 @@
+name: Deploy to LEMP Server
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. Repository auschecken
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # 2. Deploy auf den Server
+    - name: Deploy to server
+      uses: appleboy/ssh-action@v0.1.9
+      with:
+        host: ${{ secrets.SERVER_IP }}
+        username: ${{ secrets.SSH_USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        port: 22
+        script: |
+          cd /var/www/mensa-plan
+          git pull origin main
+          # Optionale Schritte, z.B.:
+          composer install --no-dev --optimize-autoloader
+          php artisan migrate --force
+          sudo systemctl restart php8.2-fpm
+          sudo systemctl restart nginx
