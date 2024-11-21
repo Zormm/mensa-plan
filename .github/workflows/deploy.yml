@@ -23,7 +23,7 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: 22
         script: |
-          cd /path/to/your/app
+          cd /var/www/mensa-plan
           git pull origin main
           # Optionale Schritte, z.B.:
           composer install --no-dev --optimize-autoloader
