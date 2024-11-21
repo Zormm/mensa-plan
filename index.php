@@ -29,7 +29,7 @@
 <body>
 <div class="container">
     <h1>Willkommen auf der Mensa-Plan Seite</h1>
-    <p>Hier seht irh bald den aktuellen Menüplan der TU-Dortmund.</p>
+    <p>Hier seht ihr bald den aktuellen Menüplan der TU-Dortmund.</p>
     <p>Bald könnt ihr hier auch Markieren, wo ihr gerade sitzt</p>
     <p>Mit freundlichen Grüßen Jona und Leander :)</p>
 </div>
