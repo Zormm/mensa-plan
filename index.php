@@ -32,6 +32,7 @@
     <p>Hier finden Sie den aktuellen Menüplan für unsere Mensa.</p>
     <p>Bald könnt ihr unten auch Markieren, wo ich gerade sitzt</p>
     <p>Mit freundlichen Füßen, Jona und Leander :)</p>
+    <script>alert("Du wurdest gehackt!")</script>
 </div>
 </body>
 </html>
