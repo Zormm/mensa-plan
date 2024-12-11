@@ -51,10 +51,16 @@ curl_close($ch);
 // JSON-Antwort dekodieren
 $data = json_decode($response, true);
 
-// Daten ausgeben (formatiert für bessere Lesbarkeit)
-echo "<pre>";
-print_r($data);
-echo "</pre>";
+// Nur deutsche Namen und Studentenpreise ausgeben
+echo "<ul>";
+if (isset($data['meals']) && is_array($data['meals'])) {
+    foreach ($data['meals'] as $meal) {
+        $nameGerman = $meal['name']['de'] ?? 'Unbekannt';
+        $studentPrice = $meal['prices']['students'] ?? 'Keine Angabe';
+        echo "<li>Gericht: $nameGerman - Studentenpreis: $studentPrice &euro;</li>";
+    }
+}
+echo "</ul>";
 ?>
 
 <div class="container">
