@@ -11,42 +11,41 @@
 <body>
 <?php
 
-// Funktion, um zu prüfen, ob ein Datum ein Feiertag ist
-function isHoliday($date) {
-    // Hier könnten Feiertage definiert werden, je nach Region oder Organisation
-    $holidays = [
-        '2024-12-25', // Beispiel für einen Feiertag (Weihnachten)
-        '2024-12-26'  // Beispiel für einen Feiertag (zweiter Weihnachtstag)
-    ];
-    return in_array($date, $holidays);
+// Funktion, um das erste valide Datum mit API-Daten zu finden
+function findNextValidDate($baseDate, $apiBaseUrl, $canteenId, $maxDays = 14) {
+    for ($i = 0; $i <= $maxDays; $i++) {
+        $currentDate = date('Y-m-d', strtotime("$baseDate +$i days"));
+        $apiUrl = "$apiBaseUrl/$canteenId/$currentDate?expand=true";
+
+        // API-Daten abrufen
+        $response = file_get_contents($apiUrl);
+
+        // Prüfen, ob die Antwort valide ist und nicht leer
+        if ($response !== false && !empty(json_decode($response, true))) {
+            return [
+                'date' => $currentDate,
+                'data' => json_decode($response, true)
+            ];
+        }
+    }
+
+    // Wenn nach maxDays keine validen Daten gefunden werden
+    return null;
 }
 
-// Funktion, um den nächsten Wochentag zu berechnen
-function getNextAvailableDate($date) {
-    // Überprüfen, ob der gegebene Tag ein Feiertag ist oder nicht auf einen Wochentag fällt
-    $nextDate = $date;
-    while (isHoliday($nextDate) || (date('N', strtotime($nextDate)) >= 6)) {
-        $nextDate = date('Y-m-d', strtotime($nextDate . ' +1 day'));
-    }
-    return $nextDate;
-}
+// Basis-URL und Kantinen-ID definieren
+$apiBaseUrl = 'https://mobil.itmc.tu-dortmund.de/canteen-menu/v3/canteens';
+$canteenId = '341';
 
 // Aktuelles Datum abrufen
 $currentDate = date('Y-m-d');
 
-// Nächster verfügbarer Tag ermitteln, falls der aktuelle Tag ein Feiertag ist
-$finalDate = getNextAvailableDate($currentDate);
+// Nächste verfügbare Daten abrufen
+$result = findNextValidDate($currentDate, $apiBaseUrl, $canteenId);
 
-// API-URL definieren
-$apiUrl = 'https://mobil.itmc.tu-dortmund.de/canteen-menu/v3/canteens/341/' . $finalDate . '?expand=true';
-
-// API-Aufruf initialisieren
-$response = file_get_contents($apiUrl);
-
-// Überprüfen, ob die Antwort erfolgreich war
-if ($response !== false) {
-    // JSON-Daten dekodieren
-    $data = json_decode($response, true);
+if ($result !== null) {
+    $validDate = $result['date'];
+    $data = $result['data'];
 
     // Ergebnis-Array für die gefilterten Gerichte
     $filteredMeals = [];
@@ -64,16 +63,17 @@ if ($response !== false) {
 
     // Ausgabe der gefilterten Gerichte
     if (count($filteredMeals) > 0) {
-        echo "Gerichte für " . $finalDate . ":\n";
+        echo "Gerichte für " . $validDate . ":\n";
         foreach ($filteredMeals as $meal) {
             echo "Gericht: " . $meal['title'] . " | Preis (Student): " . $meal['price'] . "\n";
         }
     } else {
-        echo "Keine Gerichte für das aktuelle Datum gefunden.\n";
+        echo "Keine Gerichte für das Datum $validDate gefunden.\n";
     }
 } else {
-    echo "Fehler beim Abrufen der API-Daten.\n";
+    echo "Keine gültigen Menü-Daten für die nächsten zwei Wochen gefunden.\n";
 }
+
 ?>
 
 
