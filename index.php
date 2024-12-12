@@ -7,6 +7,9 @@
     <title>Menüplan</title>
 </head>
 <body>
-    <?php require 'menu.php' ?>
+    <?php
+    require 'map.php';
+    require 'menu.php';
+    ?>
 </body>
 </html>

@@ -3,6 +3,7 @@
     padding: 0;
     box-sizing: border-box;
     background: #f0f0f0;
+    font-family: "Verdana";
 }
 
 .menu {
@@ -12,4 +13,107 @@
     padding: 10px 20px;
     background: #333;
     color: #fff;
+}
+
+#map-body {
+    display: grid;
+    width: calc(24rem + 150px);
+    height: calc(15rem + 100px);
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 50px;
+    margin: 50px auto;
+}
+
+.map-table {
+    display: flex;
+    width: 6rem;
+    height: 5rem;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.map-table-seat {
+    height: 1rem;
+    width: 1rem;
+    background-color: #00A8AA;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+.map-table-seat:hover {
+    transform: scale(1.2);
+    background-color: #007F80;
+}
+
+.map-table-seat.selected {
+    background-color: #FFD700;
+}
+
+.map-table-seat.booked {
+    background-color: #848484;
+    cursor: not-allowed;
+}
+
+.map-table-table {
+    height: 2.3rem;
+    width: 6rem;
+    background-color: #bbb;
+    border-radius: 7px;
+}
+
+.legend {
+    margin: 20px auto;
+    width: 600px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.legend-item span {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+
+.legend-item .available {
+    background-color: #00A8AA;
+}
+
+.legend-item .selected {
+    background-color: #FFD700;
+}
+
+.legend-item .booked {
+    background-color: #848484;
+}
+
+.book-button {
+    display: block;
+    margin: 20px auto;
+    background-color: #00A8AA;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.book-button:hover {
+    background-color: #007F80;
+}
+
+.book-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
 }
