@@ -8,8 +8,8 @@
 </head>
 <body>
     <?php
-    require 'map.php';
     require 'menu.php';
+    require 'map.php';
     ?>
 </body>
 </html>
