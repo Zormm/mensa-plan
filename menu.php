@@ -37,27 +37,59 @@ $result = findNextValidDate($currentDate, $apiBaseUrl, $canteenId);
         <?php
         $validDate = $result['date'];
         $data = $result['data'];
-        $filteredMeals = [];
+        $hauptgerichte = [];
+        $beilagen = [];
 
         foreach ($data as $meal) {
             if (isset($meal['title']['de']) && isset($meal['price']['student'])) {
-                $filteredMeals[] = [
+                if (($meal['counter'] == 'Beilagen')) {
+                    $beilagen[] = [
+                        'title' => $meal['title']['de'],
+                        'price' => $meal['price']['student']
+                    ];
+                    continue;
+                }
+
+                $hauptgerichte[] = [
                     'title' => $meal['title']['de'],
                     'price' => $meal['price']['student']
                 ];
             }
         }
-        ?>
+        $formattedDate = $validDate;
 
-        <h2 class="text-xl mb-2">Gerichte für <?= htmlspecialchars($validDate) ?>:</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <?php foreach ($filteredMeals as $meal): ?>
+        /*
+         // Konvertiere Datum zu "Wochentag, dd.mm.yyyy" Format
+        $date = new DateTime($validDate);
+        $days = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
+        $weekday = $days[$date->format('w')];
+        $formattedDate = sprintf('%s, den %s.%s.%s', $weekday, $date->format('d'), $date->format('m'), $date->format('Y'));
+        */
+       ?>
+
+        <h2 class="text-xl mb-2 flex flex-col gap-10">Gerichte für <?= htmlspecialchars($formattedDate) ?>:</h2>
+    <section>
+        <h3 class="text-3xl">Hauptgerichte</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <?php foreach ($hauptgerichte as $meal): ?>
                 <div class="bg-white shadow-md p-4 rounded-md">
-                    <h3 class="font-semibold"><?= htmlspecialchars($meal['title']) ?></h3>
-                    <p class="text-gray-700">Preis (Student): <?= htmlspecialchars($meal['price']) ?></p>
+                    <h4 class="font-semibold"><?= htmlspecialchars($meal['title']) ?></h4>
+                    <p class="">Preis (Student): <?= htmlspecialchars($meal['price']) ?></p>
                 </div>
             <?php endforeach; ?>
         </div>
+    </section>
+    <section>
+        <h4 class="text-3xl">Beilagen</h4>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <?php foreach ($beilagen as $meal): ?>
+                <div class="bg-white shadow-md p-4 rounded-md">
+                    <h3 class="font-semibold"><?= htmlspecialchars($meal['title']) ?></h3>
+                    <p class="">Preis (Student): <?= htmlspecialchars($meal['price']) ?></p>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    </section>
 
     <?php else: ?>
         <p class="text-red-500">Keine gültigen Menü-Daten für die nächsten zwei Wochen gefunden.</p>
