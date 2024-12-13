@@ -30,11 +30,8 @@ $currentDate = date('Y-m-d');
 
 // Nächste verfügbare Daten abrufen
 $result = findNextValidDate($currentDate, $apiBaseUrl, $canteenId);
-?>
 
-<h1 class="menu">Menüplan</h1>
-    <?php if ($result !== null): ?>
-        <?php
+if ($result !== null):
         $validDate = $result['date'];
         $data = $result['data'];
         $hauptgerichte = [];
@@ -56,21 +53,24 @@ $result = findNextValidDate($currentDate, $apiBaseUrl, $canteenId);
                 ];
             }
         }
-        $formattedDate = $validDate;
+        usort($hauptgerichte, function ($a, $b) {
+            return $b['price'] <=> $a['price'];
+        });
 
-        /*
-         // Konvertiere Datum zu "Wochentag, dd.mm.yyyy" Format
+
+    // Konvertiere Datum zu "Wochentag, dd.mm.yyyy" Format
         $date = new DateTime($validDate);
         $days = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
         $weekday = $days[$date->format('w')];
         $formattedDate = sprintf('%s, den %s.%s.%s', $weekday, $date->format('d'), $date->format('m'), $date->format('Y'));
-        */
-       ?>
 
-        <h2 class="text-xl mb-2 flex flex-col gap-10">Gerichte für <?= htmlspecialchars($formattedDate) ?>:</h2>
+?>
+
+<section class="flex flex-col gap-6">
+        <h2 class="text-3xl mb-2">Gerichte für <?= $formattedDate ?>:</h2>
     <section>
-        <h3 class="text-3xl">Hauptgerichte</h3>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <h3 class="text-3xl text-primary">Hauptgerichte</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <?php foreach ($hauptgerichte as $meal): ?>
                 <div class="bg-white shadow-md p-4 rounded-md">
                     <h4 class="font-semibold"><?= htmlspecialchars($meal['title']) ?></h4>
@@ -80,8 +80,8 @@ $result = findNextValidDate($currentDate, $apiBaseUrl, $canteenId);
         </div>
     </section>
     <section>
-        <h4 class="text-3xl">Beilagen</h4>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <h4 class="text-3xl text-primary">Beilagen</h4>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <?php foreach ($beilagen as $meal): ?>
                 <div class="bg-white shadow-md p-4 rounded-md">
                     <h3 class="font-semibold"><?= htmlspecialchars($meal['title']) ?></h3>
@@ -94,3 +94,4 @@ $result = findNextValidDate($currentDate, $apiBaseUrl, $canteenId);
     <?php else: ?>
         <p class="text-red-500">Keine gültigen Menü-Daten für die nächsten zwei Wochen gefunden.</p>
     <?php endif; ?>
+</section>

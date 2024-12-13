@@ -7,10 +7,15 @@
     <link rel="stylesheet" href="public/css/tailwind.css">
     <title>Menüplan</title>
 </head>
-<body>
-    <?php
-    require 'menu.php';
-    require 'map.php';
-    ?>
+<body class="bg-gray-100">
+<section class="max-w-7xl mx-auto flex flex-col gap-4">
+    <section class="bg-primary p-4 rounded-b-xl">
+        <h1 class="text-2xl">Menüplan</h1>
+    </section>
+<?php
+require 'menu.php';
+require 'map.php';
+?>
+</section>
 </body>
 </html>
